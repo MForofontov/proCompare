@@ -181,16 +181,15 @@ def checkGenome(dataStructure, schemaDir):
 	for f in gcGenes:
 
 		with open(schemaDir+'/'+f, "r") as file:
-			seq=SeqIO.parse(file,"fasta")
+			seq=SeqIO.read(file,"fasta")
 
-			for item in seq:
-				#all core
-				cgSizes.append(int(len(item)))
+			#all core
+			cgSizes.append(int(len(seq)))
 
-				#common loci
-				stats = dataStructure[f]['Stats']
-				if stats[2] != 0:
-					commonSizes.append(int(len(item)))
+			#common loci
+			stats = dataStructure[f]['Stats']
+			if stats[2] != 0:
+				commonSizes.append(int(len(seq)))
 
 	#print "Number of loci in core genome: " + str(len(cgSizes))
 	#print "Number of loci with common alleles in the two groups: " + str(len(commonSizes))
