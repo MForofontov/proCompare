@@ -43,8 +43,9 @@ def loadGroups(filename):
 			r[name_trait] = p.keys()
 	
 	print "Comparing groups:"
-	for key in r.keys():
+	for key, value in r.items():
 		print key
+		print " ...containing %s isolates" % str(len(value))
 	print ''
 
 	return r
@@ -58,26 +59,33 @@ def loadProfile(filename,dataStructure):
 		geneDic={}
 
 		for line in reader:
+			skipIsolate=False
 			strain=line[0]
 			profile=line[1:] #has the same order as in genes
 
 			for key, value in dataStructure.items():
 				if strain in value:
 					group=key
-
-			for i in range (1,len(genes)):
-				if genes[i] not in geneDic.keys():
-					temp={}
-					temp[group]=[profile[i]]
-					geneDic[genes[i]]=temp
 				else:
-					temp=geneDic[genes[i]]
-					if group in temp.keys():
-						temp[group].append(profile[i])
-					else:
+					skipIsolate=True
+
+			if skipIsolate:
+				for i in range (1,len(genes)):
+					if genes[i] not in geneDic.keys():
+						temp={}
 						temp[group]=[profile[i]]
+						geneDic[genes[i]]=temp
+					else:
+						temp=geneDic[genes[i]]
+						if group in temp.keys():
+							temp[group].append(profile[i])
+						else:
+							temp[group]=[profile[i]]
 					
-					geneDic[genes[i]]=temp
+						geneDic[genes[i]]=temp
+			else:
+				pass
+
 
 	return geneDic
 
