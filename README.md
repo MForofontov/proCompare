@@ -23,7 +23,7 @@ This scpit requires two input files:
 
 It should look something like this:
 
-|         | Trait1 | Trait2 | ... | TraitM |
+|         | Group1 | Group2 | ... | GroupN |
 | ------- | ------ | ------ | --- | ------ |
 | Strain1 | 1      | 0      | ... | 1      |
 | Strain2 | 1      | 1      | ... | 0      |
@@ -64,7 +64,7 @@ This scpit requires two input files:
 
 It should look something like this:
 
-|         | Trait1 | Trait2 | ... | TraitM |
+|         | Group1 | Group2 | ... | GroupN |
 | ------- | ------ | ------ | --- | ------ |
 | Strain1 | 1      | 0      | ... | 1      |
 | Strain2 | 1      | 1      | ... | 0      |
