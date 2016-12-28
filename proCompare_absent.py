@@ -53,7 +53,6 @@ def loadGroups(filename):
 
 	return group_dic, groups
 
-
 def loadProfile(filename,dataStructure):
 	'''Load profile file into the program, separating the samples into the groups'''
 
@@ -94,7 +93,7 @@ def loadProfile(filename,dataStructure):
 
 	return profileDic
 	
-def proCompare(dataStructure, key1, key2):
+def proCompare(dataStructure, key1, key2, absent):
 	'''Comparison of the the two groups in the profile'''
 
 	shared_allele=[]
@@ -103,27 +102,31 @@ def proCompare(dataStructure, key1, key2):
 	#performing counts
 	for gene, value in dataStructure.items():
 
-		#group one
-		group_one=set(value[key1])
-		#group two
-		group_two=set(value[key2])
-
-		#common alleles in the two groups
-		common_alleles=len(group_one.intersection(group_two))
-		if common_alleles != 0:
-			shared_allele.append(gene)
+		if absent in dataStructure[gene][key1] or absent in dataStructure[gene][key2]:
+			pass
 		else:
-			exclusive_alleles.append(gene)
 
-		#Alleles present only in group one
-		group_one_diff=len(group_one.difference(group_two))
+			#group one
+			group_one=set(value[key1])
+			#group two
+			group_two=set(value[key2])
 
-		#Alleles present only in group two
-		group_two_diff=len(group_two.difference(group_one))
+			#common alleles in the two groups
+			common_alleles=len(group_one.intersection(group_two))
+			if common_alleles != 0:
+				shared_allele.append(gene)
+			else:
+				exclusive_alleles.append(gene)
 
-		value['Stats']=[group_one,group_two,common_alleles,group_one_diff,group_two_diff]
+			#Alleles present only in group one
+			group_one_diff=len(group_one.difference(group_two))
 
-	print '\n Comparing: ' + str(key1) + ' + ' + str(key2)
+			#Alleles present only in group two
+			group_two_diff=len(group_two.difference(group_one))
+
+			value['Stats']=[group_one,group_two,common_alleles,group_one_diff,group_two_diff]
+
+	print '\n Comparing: ' + str(key1) + ' + ' + str(key2) + ' with ' + str(len(shared_allele)+len(exclusive_alleles)) + ' loci in common'
 	print "\tLoci with shared alleles: " + str(len(shared_allele))
 	print "\tLoci with exclusive alleles: " + str(len(exclusive_alleles))
 
@@ -131,14 +134,14 @@ def proCompare(dataStructure, key1, key2):
 
 def main():
 
-	parser = argparse.ArgumentParser(description='Profile comparison script.', epilog='by Catarina Mendes (cimendes@medicina.ulisboa.pt)')
+	parser = argparse.ArgumentParser(description='Profile comparison script, with missing data.', epilog='by Catarina Mendes (cimendes@medicina.ulisboa.pt)')
 	parser.add_argument('-p', '--profile', help='Input profile tab file.')
 	parser.add_argument('-g', '--group', help='group csv file')
+	parser.add_argument('-a', '--absent', help='character representing missing data')
 
 	args = parser.parse_args()
 
 	sys.stdout = Logger("./")
-
 	#Loads group file
 	groups_dic, groups_list=loadGroups(args.group)
 
@@ -147,7 +150,7 @@ def main():
 
 	#performs profile comparison for two groups at a time
 	for a, b in itertools.combinations(groups_list, 2):
-		genes=proCompare(profiles, a, b)
+		genes=proCompare(profiles, a, b, args.absent)
 
 	print "\nFinished"
 	sys.exit(0)
