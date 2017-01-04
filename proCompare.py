@@ -63,17 +63,20 @@ def loadProfile(filename,dataStructure):
 		profileDic={}
 
 		for line in reader:
-			skipIsolate=False
+			skipIsolate=True
 			strain=line[0]
 			profile=line[1:] #has the same order as in genes
 
 			for key, value in dataStructure.items():
 				if strain in value:
 					group=key
+					skipIsolate=False
+					break
 				else:
-					skipIsolate=True
+					pass
+					
 
-			if skipIsolate:
+			if not skipIsolate:
 				for i in range (0,len(genes)):
 					if genes[i] not in profileDic.keys():
 						temp={}
@@ -91,6 +94,10 @@ def loadProfile(filename,dataStructure):
 				pass
 
 	print "profile size: " + str(len(profileDic))
+
+	'''for key, value in profileDic.items():
+		print key
+		print value'''
 
 	return profileDic
 	
@@ -134,6 +141,7 @@ def main():
 	parser = argparse.ArgumentParser(description='Profile comparison script.', epilog='by Catarina Mendes (cimendes@medicina.ulisboa.pt)')
 	parser.add_argument('-p', '--profile', help='Input profile tab file.')
 	parser.add_argument('-g', '--group', help='group csv file')
+	parser.add_argument('-s', '--selection', help='Limit the analysis to the isolates in the group file. Otherwise group file must contain all isolates.', action='store_true', default=False, required=False)
 
 	args = parser.parse_args()
 
@@ -141,6 +149,9 @@ def main():
 
 	#Loads group file
 	groups_dic, groups_list=loadGroups(args.group)
+
+	#if args.selection:
+
 
 	#Loads profile file
 	profiles=loadProfile(args.profile,groups_dic)

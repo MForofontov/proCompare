@@ -62,17 +62,19 @@ def loadProfile(filename,dataStructure):
 		profileDic={}
 
 		for line in reader:
-			skipIsolate=False
+			skipIsolate=True
 			strain=line[0]
 			profile=line[1:] #has the same order as in genes
 
 			for key, value in dataStructure.items():
 				if strain in value:
 					group=key
+					skipIsolate=False
+					break
 				else:
-					skipIsolate=True
+					pass
 
-			if skipIsolate:
+			if not skipIsolate:
 				for i in range (0,len(genes)):
 					if genes[i] not in profileDic.keys():
 						temp={}
