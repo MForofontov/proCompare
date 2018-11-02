@@ -153,6 +153,10 @@ def main():
 
     args = parser.parse_args()
 
+    args.outdir = os.path.abspath(args.outdir)
+    if not os.path.isdir(args.outdir):
+        os.makedirs(args.outdir)
+
     sys.stdout = Logger("./")
 
     # Loads group file
@@ -167,10 +171,10 @@ def main():
     for a, b in itertools.combinations(groups_list, 2):
         _, shared_allele, exclusive_alleles = proCompare(profiles, a, b)
 
-        with open(os.path.join(os.path.abspath(args.outdir),
+        with open(os.path.join(args.outdir,
                                '{type}_{a}_{b}.txt'.format(type='shared', a=a, b=b))) as writer:
             writer.write('\n'.join(shared_allele) + '\n')
-        with open(os.path.join(os.path.abspath(args.outdir),
+        with open(os.path.join(args.outdir,
                                '{type}_{a}_{b}.txt'.format(type='exclusive', a=a, b=b))) as writer:
             writer.write('\n'.join(exclusive_alleles) + '\n')
 
