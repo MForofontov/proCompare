@@ -4,7 +4,7 @@
 """
 Created on Wed Apr 20 17:05:00 2022
 
-@author: Catarina Mendes, Mykyta Forofontov
+@author: Inês Mendes, Mykyta Forofontov
 
 """
 
@@ -12,7 +12,7 @@ Created on Wed Apr 20 17:05:00 2022
 Purpose
 -------
 This script serves to analyse loci from different groups,
-identifying alleles that are shared or exlcusive.
+identifying alleles that are shared or exclusive.
 Code documentation
 ------------------
 """
