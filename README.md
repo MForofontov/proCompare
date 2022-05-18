@@ -5,7 +5,8 @@ Tool for comparing profile files, two by two, to analyse allele segregation.
 With the profile file and a group file, separating the isolates into groups, this scrip compares the loci on the profile with every two groups, indicating the number of loci that share alleles for the groups being compared. 
 
 ## Usage
-	usage: python proCompare.py -h 
+
+```bash
 usage: proCompare.py [-h] -p PROFILE -g GROUP -o OUTDIR -a ABSENT
 
 Created on Wed Apr 20 17:05:00 2022
@@ -22,6 +23,7 @@ optional arguments:
                         outdir path
   -a ABSENT, --absent ABSENT
                         character representing missing data
+```
 ## Input
 
 This scpit requires two input files:
